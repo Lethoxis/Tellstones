@@ -12,7 +12,9 @@
   font-family: Roboto, Open Sans, Poppins, sans-serif;
 }
 
-
+div{
+  border: 1px solid
+}
 
 body{
   display: flex;
