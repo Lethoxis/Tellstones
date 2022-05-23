@@ -27,7 +27,8 @@ const Stone = ({
     name,
     onClick,
     selected,
-    visible = true,
+    visible = true, // Has contour
+    hidden = false, // Face down
     clickable = false,
 }) => {
     // Blank stone
@@ -56,7 +57,7 @@ const Stone = ({
     return (
         <img
             className={"stone" + (clickable ? " clickable" : "")}
-            src={Links[name]}
+            src={hidden ? Links.Hidden : Links[name]}
             alt={name}
             style={stoneStyle}
             onClick={clickable ? onClick : null}

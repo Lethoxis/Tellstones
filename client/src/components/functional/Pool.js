@@ -1,11 +1,11 @@
 import React from "react";
 import Stone, { StoneNames } from "./Stone";
 
-const Pool = ({ state, handleClickPool }) => {
-    console.log(state.selectedStone, state.selectedStone == null);
+const Pool = ({ pool, selectedStone, handleClickPool }) => {
+    console.log(selectedStone, selectedStone == null);
     return (
         <div style={{ flexDirection: "column" }}>
-            {state.pool.map((stone) => (
+            {pool.map((stone) => (
                 <div
                     key={stone}
                     style={{
@@ -18,8 +18,8 @@ const Pool = ({ state, handleClickPool }) => {
                     <Stone
                         name={StoneNames[stone]}
                         onClick={() => handleClickPool(stone)}
-                        selected={state.selectedStone === stone}
-                        clickable={state.selectedStone == null}
+                        selected={selectedStone === stone}
+                        clickable={selectedStone == null}
                     />
                 </div>
             ))}

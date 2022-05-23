@@ -12,20 +12,21 @@ const isVisible = (line, pool, selectedStone, i) => {
 };
 
 const isClickable = (line, pool, selectedStone, i) => {
-    if (selectedStone === null) return true;
+    // If nothing is selected, every non-blank stone is clickable
+    if (selectedStone === null) return line[i] !== 8;
 
-    if (line[i] !== 8) return false;
     // If selected from pool
     if (pool.includes(selectedStone)) {
         if (line[i] !== 8) return false;
         if (i === 0) return line[1] !== 8;
         if (i === 6) return line[5] !== 8;
         return line[i - 1] !== 8 || line[i + 1] !== 8;
-    } // If selected from line, can click on another stone (or the same one)
+    } // If selected from line, can click on any line stone
     else return line[i] !== 8;
 };
 
-const Line = ({ state, handleClickLine }) => {
+const Line = ({ line, hidden, pool, selectedStone, handleClickLine }) => {
+    console.log("Line:", line);
     return (
         <div className="line">
             <img
@@ -33,13 +34,10 @@ const Line = ({ state, handleClickLine }) => {
                 alt="Line"
                 style={{ width: "100%" }}
             />
-            <div
-                className="line-stones"
-                style={{ display: "flex", justifyContent: "center" }}
-            >
-                {state.line.map((stone, i) => (
+            <div className="line-stones">
+                {line.map((stone, i) => (
                     <div
-                        key={stone + i}
+                        key={`${stone} ${i}`}
                         style={{
                             height: "140px",
                             width: "140px",
@@ -50,17 +48,18 @@ const Line = ({ state, handleClickLine }) => {
                         <Stone
                             name={StoneNames[stone]}
                             onClick={() => handleClickLine(stone, i)}
-                            selected={state.selectedStone === stone}
+                            selected={selectedStone === stone}
+                            hidden={hidden[stone]}
                             visible={isVisible(
-                                state.line,
-                                state.pool,
-                                state.selectedStone,
+                                line,
+                                pool,
+                                selectedStone,
                                 i
                             )}
                             clickable={isClickable(
-                                state.line,
-                                state.pool,
-                                state.selectedStone,
+                                line,
+                                pool,
+                                selectedStone,
                                 i
                             )}
                         />
