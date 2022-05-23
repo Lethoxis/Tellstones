@@ -1,16 +1,30 @@
-import React from 'react';
+import React from "react";
+import Stone, { StoneNames } from "./Stone";
 
-const Pool = ({state, handleClickPool}) => {
-  return (
-    <div style={{flexDirection: "column"}}>
-      {state.pool.map(stone => (
-        <p><button style={{height: "50px", width: "50px", borderRadius: "25px"}}
-                   onClick={() => handleClickPool(stone)}>
-          <img src="/public/images/sword" alt=""/>
-        </button></p>
-      ))}
-    </div>
-  );
-}
+const Pool = ({ state, handleClickPool }) => {
+    console.log(state.selectedStone, state.selectedStone == null);
+    return (
+        <div style={{ flexDirection: "column" }}>
+            {state.pool.map((stone) => (
+                <div
+                    key={stone}
+                    style={{
+                        height: "100px",
+                        width: "100px",
+                        borderRadius: "50px",
+                        margin: "5px 5px 10px",
+                    }}
+                >
+                    <Stone
+                        name={StoneNames[stone]}
+                        onClick={() => handleClickPool(stone)}
+                        selected={state.selectedStone === stone}
+                        clickable={state.selectedStone == null}
+                    />
+                </div>
+            ))}
+        </div>
+    );
+};
 
 export default Pool;
