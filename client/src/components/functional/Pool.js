@@ -4,17 +4,9 @@ import Stone, { StoneNames } from "./Stone";
 const Pool = ({ pool, selectedStone, handleClickPool }) => {
     console.log(selectedStone, selectedStone == null);
     return (
-        <div style={{ flexDirection: "column" }}>
+        <div className="pool">
             {pool.map((stone) => (
-                <div
-                    key={stone}
-                    style={{
-                        height: "100px",
-                        width: "100px",
-                        borderRadius: "50px",
-                        margin: "5px 5px 10px",
-                    }}
-                >
+                <div key={stone} className="pool-stone">
                     <Stone
                         name={StoneNames[stone]}
                         onClick={() => handleClickPool(stone)}

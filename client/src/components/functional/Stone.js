@@ -45,21 +45,15 @@ const Stone = ({
         );
 
     // Normal stones
-    var stoneStyle = {
-        minWidth: "100%",
-        width: "100%",
-        maxWidth: "100%",
-        filter: "drop-shadow(0 10px 0.4rem black)",
-        borderRadius: "50%",
-    };
-    if (selected) stoneStyle.filter += " hue-rotate(310deg) saturate(3)";
-
     return (
         <img
-            className={"stone" + (clickable ? " clickable" : "")}
+            className={
+                "stone" +
+                (clickable ? " clickable" : "") +
+                (selected ? " selected" : "")
+            }
             src={hidden ? Links.Hidden : Links[name]}
             alt={name}
-            style={stoneStyle}
             onClick={clickable ? onClick : null}
         />
     );

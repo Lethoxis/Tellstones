@@ -13,7 +13,15 @@ const ENDPOINT = "";
 function Table() {
     const [line, setLine] = useState([8, 8, 8, 4, 8, 8, 8]);
     const [pool, setPool] = useState([0, 1, 2, 3, 5, 6]);
-    const [hidden, setHidden] = useState({0: false, 1: false, 2: false, 3: false, 4: false, 5: false, 6: false});
+    const [hidden, setHidden] = useState({
+        0: false,
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+        5: false,
+        6: false,
+    });
     const [selectedStone, setSelectedStone] = useState(null);
     const [highlightedStones, setHighlightedStones] = useState([]);
     const [turn, setTurn] = useState(true);
@@ -67,14 +75,12 @@ function Table() {
 
     //Setting the states to start a game when new user join
     const gameStart = (gameState, players, turn) => {
-        const opponent = players.filter(
-            ([id, name]) => id !== socketID
-        )[0][1];
+        const opponent = players.filter(([id, name]) => id !== socketID)[0][1];
         this.setState({ opponentPlayer: [opponent, 0], end: false });
         this.setBoard(gameState);
         this.setTurn(turn);
         this.setMessage();
-    }
+    };
 
     // Click on a pool stone
     const handleClickPool = (stone) => {
@@ -107,7 +113,7 @@ function Table() {
         else if (stone === selectedStone && !hidden[stone]) {
             setPhase(2);
 
-            let newHidden = {...hidden};
+            let newHidden = { ...hidden };
             newHidden[stone] = true;
             setHidden(newHidden);
             setSelectedStone(null);
@@ -181,40 +187,28 @@ function Table() {
     } else {
         console.log("LINE", line, "POOL", pool);
         return (
-            <>
-                <div
-                    style={{
-                        color: "white",
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-around",
-                        width: "100%",
-                    }}
-                >
-                    <Line
-                        line={line}
-                        hidden={hidden}
+            <div
+                style={{
+                    color: "white",
+                    width: "100%",
+                }}
+            >
+                <Line
+                    line={line}
+                    hidden={hidden}
+                    pool={pool}
+                    selectedStone={selectedStone}
+                    handleClickLine={handleClickLine}
+                />
+                <div className="below-line">
+                    <Options />
+                    <Pool
                         pool={pool}
                         selectedStone={selectedStone}
-                        handleClickLine={handleClickLine}
+                        handleClickPool={handleClickPool}
                     />
-                    <div
-                        style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "space-around",
-                            alignItems: "center",
-                        }}
-                    >
-                        <Options />
-                        <Pool
-                            pool={pool}
-                            selectedStone={selectedStone}
-                            handleClickPool={handleClickPool}
-                        />
-                    </div>
                 </div>
-            </>
+            </div>
         );
     }
 }
