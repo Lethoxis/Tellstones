@@ -18,6 +18,7 @@
 }
 
 
+/************** Body **************/
 
 body{
   display: flex;
@@ -30,40 +31,70 @@ body{
   overflow: none;
 }
 
+h1 {
+  color: white;
+  filter: drop-shadow(0 5px 0.2rem black);
+  text-align: center;
+  margin-bottom: 50px;
+  font-size: 50px;
+}
+
 #root{
+  user-select: none;
   display: flex;
   align-items: center;
   height: 100%;
   min-width: 300px;
-  width: 95%
+  width: 95%;
+
+  --color-highlight: rgb(255, 208, 0);
+  --color-select: rgb(255, 128, 0);
+  --color-select-twice: rgb(144, 0, 163);
 }
+
+
+/************** Line **************/
 
 .line {
   position: relative;
   width: 100%;
+  filter: drop-shadow(0 5px 0.2rem black);
 }
-.line-stones {
+.div-inside-line {
   position: absolute;
   bottom: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
+.line-stones {
+  margin: auto;
+  width: 85%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 25px;
+  align-content: center;
+}
+.line-stones > * {
+  border-radius: 50%;
+  height: 100%;
+}
+
+
+/************** Pool/options **************/
 
 .below-line {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px 40px;
+  margin: 20px 40px 0px;
   height: 100px;
 }
 
 .pool {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 15px;
 }
 .pool-stone {
   height: 100px;
@@ -71,32 +102,45 @@ body{
   border-radius: 50px;
 }
 
+
+/************** Stones **************/
+
 .stone {
   min-width: 100%;
   width: 100%;
   max-width: 100%;
   filter: drop-shadow(0 10px 0.4rem black);
   border-radius: 50%;
+  transition: all 0.2s ease;
+}
+.stone.highlighted {
+  outline: 3px outset var(--color-highlight);
 }
 .stone.selected {
-  filter: drop-shadow(0 0 5px orange) drop-shadow(0 10px 0.4rem black);
-  outline: 4px solid orange;
+  filter: drop-shadow(0 0 4px var(--color-select)) drop-shadow(0 10px 0.4rem black);
+  outline: 5px outset var(--color-select);
 }
+.stone.selected-twice {
+  filter: drop-shadow(0 0 4px var(--color-select-twice)) drop-shadow(0 10px 0.4rem black);
+  outline: 8px outset var(--color-select-twice);
+}
+
 .stone.blank {
   width: 100%;
   height: 100%;
 }
-.stone.visible {
-  border: 1px dashed;
+.stone.blank.visible {
+  border: 4px dashed white;
   border-radius: 50%;
+}
+.stone.blank.selected {
+  filter: drop-shadow(0 0 4px var(--color-select));
+  outline: 5px outset var(--color-select);
+}
+
+.stone:not(.clickable):not(.selected) {
+  opacity: 60%;
 }
 .clickable:hover {
   cursor: pointer;
-}
-
-.board{
-  display: grid;
-  width: max-content;
-  min-height: min-content;
-  grid-template-columns: repeat(3, auto);
 }

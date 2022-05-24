@@ -1,7 +1,9 @@
 import React from "react";
 
+const images = (stoneName) => process.env.PUBLIC_URL + "/images/"+ stoneName +".png"
+
 const Links = {
-    Sword: "https://media.discordapp.net/attachments/805735229359783966/976799523420635208/epee.png",
+    Sword: process.env.PUBLIC_URL + "/images/sword.png",
     Shield: "https://media.discordapp.net/attachments/805735229359783966/976799524536332298/bouclier.png",
     Horse: "https://media.discordapp.net/attachments/805735229359783966/976799524750250024/chevalier.png",
     Crown: "https://media.discordapp.net/attachments/805735229359783966/976799524959969340/couronne.png",
@@ -11,22 +13,25 @@ const Links = {
     Hidden: "https://media.discordapp.net/attachments/805735229359783966/976799523731017748/hidden.png",
 };
 
-export const StoneNames = [
-    "Sword",
-    "Shield",
-    "Horse",
-    "Crown",
-    "Hammer",
-    "Scales",
-    "Flag",
-    "Hidden",
-    "Blank",
-];
+export const stoneName = (stone) => {
+    if (stone < 7) return [
+        "Sword",
+        "Shield",
+        "Horse",
+        "Crown",
+        "Hammer",
+        "Scales",
+        "Flag"
+    ][stone]
+    else return "Blank"
+};
 
 const Stone = ({
     name,
     onClick,
     selected,
+    selectedTwice = false,
+    highlighted = false, // Has to be selected by the opponent
     visible = true, // Has contour
     hidden = false, // Face down
     clickable = false,
@@ -38,7 +43,9 @@ const Stone = ({
                 className={
                     "stone blank" +
                     (visible ? " visible" : "") +
-                    (clickable ? " clickable" : "")
+                    (selected ? " selected" : "") +
+                    (clickable ? " clickable" : "") +
+                    (highlighted ? " highlighted" : "")
                 }
                 onClick={clickable ? onClick : null}
             />
@@ -49,10 +56,12 @@ const Stone = ({
         <img
             className={
                 "stone" +
+                (selected ? " selected" : "") +
+                (selectedTwice ? " selected-twice" : "") +
                 (clickable ? " clickable" : "") +
-                (selected ? " selected" : "")
+                (highlighted ? " highlighted" : "")
             }
-            src={hidden ? Links.Hidden : Links[name]}
+            src={hidden ? images("hidden") : images(name)}
             alt={name}
             onClick={clickable ? onClick : null}
         />

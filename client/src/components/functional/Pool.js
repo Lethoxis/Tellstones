@@ -1,17 +1,17 @@
 import React from "react";
-import Stone, { StoneNames } from "./Stone";
+import Stone, { stoneName } from "./Stone";
 
-const Pool = ({ pool, selectedStone, handleClickPool }) => {
-    console.log(selectedStone, selectedStone == null);
+const Pool = ({ pool, highlightedStones, selectedStones, handleClickPool }) => {
     return (
         <div className="pool">
             {pool.map((stone) => (
                 <div key={stone} className="pool-stone">
                     <Stone
-                        name={StoneNames[stone]}
+                        name={stoneName(stone)}
                         onClick={() => handleClickPool(stone)}
-                        selected={selectedStone === stone}
-                        clickable={selectedStone == null}
+                        selected={selectedStones.includes(stone)}
+                        highlighted={highlightedStones.includes(stone)}
+                        clickable={selectedStones.length === 0}
                     />
                 </div>
             ))}

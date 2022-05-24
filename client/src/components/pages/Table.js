@@ -11,7 +11,7 @@ import qs from "qs";
 const ENDPOINT = "";
 
 function Table() {
-    const [line, setLine] = useState([8, 8, 8, 4, 8, 8, 8]);
+    const [line, setLine] = useState([10, 11, 12, 4, 14, 15, 16]);
     const [pool, setPool] = useState([0, 1, 2, 3, 5, 6]);
     const [hidden, setHidden] = useState({
         0: false,
@@ -22,8 +22,8 @@ function Table() {
         5: false,
         6: false,
     });
-    const [selectedStone, setSelectedStone] = useState(null);
-    const [highlightedStones, setHighlightedStones] = useState([]);
+    const [selectedStones, setSelectedStones] = useState([]);
+    const [highlightedStones, setHighlightedStones] = useState([3,4]);
     const [turn, setTurn] = useState(true);
     const [phase, setPhase] = useState(0);
     const [end, setEnd] = useState(false);
@@ -84,57 +84,67 @@ function Table() {
 
     // Click on a pool stone
     const handleClickPool = (stone) => {
-        console.log(stone);
-
-        if (selectedStone === stone) setSelectedStone(null);
-        else setSelectedStone(stone);
+        setSelectedStones([stone]);
     };
 
     // Click on a line stone
-    const handleClickLine = (stone, i) => {
-        console.log("clickLine", stone, i);
-
-        // Select a stone from the line
-        if (selectedStone === null) {
-            setSelectedStone(stone);
+    const handleClickLine = (stone) => {
+        if (selectedStones.length === 1) {
+            // [1] Place a stone from the pool
+            if (stone >= 7) setPhase(1);
+            // [2] Hide a stone
+            else if (stone === selectedStones[0] && !hidden[stone]) setPhase(2);
+            // [3] Swap two stones
+            else if (stone !== selectedStones[0])  setPhase(3);
+            // [4] Peek a stone
+            else if (stone === selectedStones[0] && hidden[stone]) setPhase(4);
         }
+        
+        setSelectedStones([...selectedStones, stone]);
+    };
+
+    const handleCancel = () => {
+        setPhase(0);
+        setSelectedStones([]);
+    }
+
+    const handleValidate = () => {
+        const [stone1, stone2] = selectedStones;
+        const [i, j] = [line.indexOf(stone1), line.indexOf(stone2)];
 
         // [1] Place a stone from the pool
-        else if (stone === 8) {
-            setPhase(1);
-
+        if (stone2 >= 7) {
             let newLine = [...line];
-            newLine[i] = selectedStone;
+            newLine[j] = stone1;
             setLine(newLine);
-            setPool(pool.filter((s) => s !== selectedStone));
-            setSelectedStone(null);
+            setPool(pool.filter((s) => s !== stone1));
+            setSelectedStones([]);
         }
         // [2] Hide a stone
-        else if (stone === selectedStone && !hidden[stone]) {
-            setPhase(2);
-
+        else if (stone1 === stone2 && !hidden[stone1]) {
             let newHidden = { ...hidden };
-            newHidden[stone] = true;
+            newHidden[stone1] = true;
             setHidden(newHidden);
-            setSelectedStone(null);
+            setSelectedStones([]);
         }
         // [3] Swap two stones
-        else if (stone !== selectedStone) {
-            setPhase(3);
-
+        else if (stone1 !== stone2) {
             let newLine = [...line];
-            const j = line.indexOf(selectedStone);
             [newLine[i], newLine[j]] = [newLine[j], newLine[i]];
             setLine(newLine);
-            setSelectedStone(null);
+            setSelectedStones([]);
         }
         // [4] Peek a stone
-        else if (stone === selectedStone && hidden[stone]) {
-            setPhase(4);
-
+        else if (stone1 === stone2 && hidden[stone1]) {
+            let newHidden = { ...hidden };
+            newHidden[stone1] = false;
+            setHidden(newHidden);
+            setSelectedStones([]);
             // Displaying what the stone is
         }
-    };
+
+        setPhase(0);
+    }
 
     //Setting the states each move when the game haven't ended (no wins or draw)
     /*handleUpdate(gameState, turn) {
@@ -189,22 +199,29 @@ function Table() {
         return (
             <div
                 style={{
-                    color: "white",
-                    width: "100%",
+                    width: "100%"
                 }}
             >
+                <h1>Tellstones</h1>
                 <Line
                     line={line}
                     hidden={hidden}
                     pool={pool}
-                    selectedStone={selectedStone}
+                    highlightedStones={highlightedStones}
+                    selectedStones={selectedStones}
                     handleClickLine={handleClickLine}
                 />
                 <div className="below-line">
-                    <Options />
+                    <Options
+                        phase={phase}
+                        selectedStones={selectedStones}
+                        handleCancel={handleCancel}
+                        handleValidate={handleValidate}
+                    />
                     <Pool
                         pool={pool}
-                        selectedStone={selectedStone}
+                        highlightedStones={highlightedStones}
+                        selectedStones={selectedStones}
                         handleClickPool={handleClickPool}
                     />
                 </div>
