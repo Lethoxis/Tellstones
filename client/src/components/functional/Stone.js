@@ -1,6 +1,6 @@
 import React from "react";
 
-const images = (stoneName) => `/images/${stoneName}.png`;
+const images = (stoneName) => `/images/${stoneName.toLowerCase()}.png`;
 
 export const stoneName = (stone) => {
     if (stone < 7)
