@@ -1,7 +1,6 @@
 import React from "react";
 
-const images = (stoneName) =>
-    process.env.PUBLIC_URL + `/images/stones/${stoneName}.png`;
+const images = (stoneName) => `../public/images/stones/${stoneName}.png`;
 
 export const stoneName = (stone) => {
     if (stone < 7)
