@@ -1,10 +1,14 @@
 import React from "react";
 import Stone, { stoneName } from "./Stone";
 
-const isVisible = (line, pool, selectedStones, i) => {
+const isVisible = (line, pool, highlightedStones, selectedStones, i) => {
+    // If highlighted stones, nothing is visible
+    if (highlightedStones.length > 0) return false;
+
     // If zero or two stones are selected, nothing is visible
-    if (selectedStones.length === 0 || selectedStones.length === 2) return false;
-    
+    if (selectedStones.length === 0 || selectedStones.length === 2)
+        return false;
+
     // If the stone is not blank
     if (line[i] < 7) return true;
 
@@ -17,7 +21,21 @@ const isVisible = (line, pool, selectedStones, i) => {
     return false;
 };
 
-const isClickable = (line, pool, selectedStones, i) => {
+const isClickable = (
+    i,
+    line,
+    pool,
+    phase,
+    highlightedStones,
+    selectedStones
+) => {
+    // If phase >= 15 (challenge or boast in progress) nothing is clickable
+    if (phase >= 15) return false;
+
+    // If highlighted stones, only clickable what is highlighted
+    if (highlightedStones.length > 0)
+        return highlightedStones.includes(line[i]);
+
     // If two stones are selected, nothing is clickable
     if (selectedStones.length === 2) return false;
 
@@ -30,43 +48,57 @@ const isClickable = (line, pool, selectedStones, i) => {
         if (i === 0) return line[1] < 7;
         if (i === 6) return line[5] < 7;
         return line[i - 1] < 7 || line[i + 1] < 7;
-    } // If selected from line, can click on any line stone
-    else return line[i] < 7;
+    } // If selected from line, can click on any line stone that was not already selected
+    else return line[i] < 7 && line[i] !== selectedStones[0];
 };
 
-const Line = ({ line, hidden, pool, highlightedStones, selectedStones, handleClickLine }) => {
+const Line = ({
+    isPlayerTurn,
+    line,
+    hidden,
+    pool,
+    phase,
+    highlightedStones,
+    selectedStones,
+    handleClickLine,
+}) => {
     return (
         <div className="line">
-            <img
-                src="https://media.discordapp.net/attachments/805735229359783966/976799574041702421/ligne.png"
-                alt="Line"
-                style={{ width: "100%" }}
-            />
+            <img src="/images/line.png" alt="Line" style={{ width: "100%" }} />
             <div className="div-inside-line">
                 <div className="line-stones">
                     {line.map((stone, i) => (
-                        <div key={stone}>
-                            <Stone
-                                name={stoneName(stone)}
-                                onClick={() => handleClickLine(stone)}
-                                selected={selectedStones.includes(stone)}
-                                selectedTwice={selectedStones.length === 2 && selectedStones[0] === stone && selectedStones[1] === stone}
-                                highlighted={highlightedStones.includes(stone)}
-                                hidden={hidden[stone]}
-                                visible={isVisible(
+                        <Stone
+                            key={stone}
+                            name={stoneName(stone)}
+                            onClick={() => handleClickLine(stone)}
+                            selected={selectedStones.includes(stone)}
+                            highlighted={highlightedStones.includes(stone)}
+                            peeked={
+                                phase === 14 &&
+                                !isPlayerTurn &&
+                                highlightedStones.includes(stone)
+                            }
+                            hidden={hidden[stone]}
+                            visible={isVisible(
+                                line,
+                                pool,
+                                highlightedStones,
+                                selectedStones,
+                                i
+                            )}
+                            clickable={
+                                isPlayerTurn &&
+                                isClickable(
+                                    i,
                                     line,
                                     pool,
-                                    selectedStones,
-                                    i
-                                )}
-                                clickable={isClickable(
-                                    line,
-                                    pool,
-                                    selectedStones,
-                                    i
-                                )}
-                            />
-                        </div>
+                                    phase,
+                                    highlightedStones,
+                                    selectedStones
+                                )
+                            }
+                        />
                     ))}
                 </div>
             </div>

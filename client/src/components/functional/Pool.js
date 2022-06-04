@@ -1,7 +1,14 @@
 import React from "react";
 import Stone, { stoneName } from "./Stone";
 
-const Pool = ({ pool, highlightedStones, selectedStones, handleClickPool }) => {
+const Pool = ({
+    isPlayerTurn,
+    pool,
+    phase,
+    highlightedStones,
+    selectedStones,
+    handleClickPool,
+}) => {
     return (
         <div className="pool">
             {pool.map((stone) => (
@@ -11,7 +18,12 @@ const Pool = ({ pool, highlightedStones, selectedStones, handleClickPool }) => {
                         onClick={() => handleClickPool(stone)}
                         selected={selectedStones.includes(stone)}
                         highlighted={highlightedStones.includes(stone)}
-                        clickable={selectedStones.length === 0}
+                        clickable={
+                            isPlayerTurn &&
+                            (phase === 0 ||
+                                (phase === 11 &&
+                                    highlightedStones.includes(stone)))
+                        }
                     />
                 </div>
             ))}

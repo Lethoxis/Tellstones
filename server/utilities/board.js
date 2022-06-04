@@ -1,42 +1,36 @@
-class Board{
+const { randNumber } = require("./utils");
+
+class Board {
     constructor() {
-        this.game = new Array(9).fill(null);
-        this.winStates = [
-            [0, 1, 2], [3, 4, 5],[6, 7, 8],
-            [0, 3, 6], [1, 4, 7],[2, 5, 8],
-            [0, 4, 8], [2, 4, 6]
-        ]
-        this.end = false
-        this.turn = 'X'
-        this.switch = new Map([['X', 'O'], ['O', 'X']])
+        const firstStone = randNumber(6);
+        const pool = [0, 1, 2, 3, 4, 5, 6].filter((s) => s !== firstStone);
+        this.game = {
+            line: [10, 11, 12, firstStone, 14, 15, 16],
+            pool: pool,
+            hidden: {
+                0: false,
+                1: false,
+                2: false,
+                3: false,
+                4: false,
+                5: false,
+                6: false,
+            },
+            highlightedStones: [],
+            turn: 0,
+            phase: 0,
+        };
+        this.turn = 0;
+        this.end = false;
     }
 
-    move(index, piece){
-        if (!this.game[index] && !this.end){
-            const newState = [...this.game]
-            newState.splice(index, 1, piece)
-            this.game = newState
-        }
+    update(gameState) {
+        this.game = gameState;
     }
 
-    switchTurn(){
-        this.turn = this.switch.get(this.turn)
-    }
-
-    checkWinner(player){
-        return this.winStates.some(state =>(
-          state.every((position => this.game[position] === player))
-        ))
-    }
-    
-    checkDraw(){
-        return this.game.every(value => value !== null)
-    }
-
-    reset(){
-        this.game = new Array(9).fill(null)
-        this.tur = 'X'
+    switchTurn() {
+        this.turn = 1 - this.turn;
     }
 }
 
-module.exports = Board
+module.exports = Board;

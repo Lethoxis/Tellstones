@@ -1,10 +1,10 @@
 class Player {
-    constructor(name, room, id, piece='') {
-        this.name = name
-        this.room = room
-        this.id = id
-        this.piece = piece
+    constructor(name, room, id, number) {
+        this.name = name;
+        this.room = room;
+        this.id = id;
+        this.number = number;
     }
 }
 
-module.exports = Player
+module.exports = Player;

@@ -1,14 +1,15 @@
 const randRoom = () => {
-    var result = '';
-    var hexChars = '0123456789abcdef';
-    for (var i = 0; i < 16; i += 1) {
-        result += hexChars[Math.floor(Math.random() * 16)];
+    var result = "";
+    var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for (var i = 0; i < 4; i += 1) {
+        result += letters[Math.floor(Math.random() * 26)];
     }
     return result;
-}
+};
 
-const randPiece = () => {
-    return Math.random() > 0.5 ? 'X':'O'
-}
+// Rand 0 to n
+const randNumber = (n) => {
+    return Math.floor(Math.random() * (n + 1));
+};
 
-module.exports = {randRoom, randPiece};
+module.exports = { randRoom, randNumber };

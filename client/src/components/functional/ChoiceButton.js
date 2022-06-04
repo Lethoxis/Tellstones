@@ -1,9 +1,14 @@
-import React from 'react';
+import React from "react";
 
-const ChoiceButton = ({type, choice, label, onChoice}) => {
+const ChoiceButton = ({ choice, label, onChoice }) => {
     return (
-        <div className={`btn btn-${type}`} onClick={onChoice.bind(this, choice)}>{label}</div>
+        <button
+            className={`btn btn-menu btn-${choice}`}
+            onClick={() => onChoice(choice)}
+        >
+            {label}
+        </button>
     );
-}
+};
 
 export default ChoiceButton;

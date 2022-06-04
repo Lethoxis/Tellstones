@@ -1,10 +1,9 @@
-import React from 'react'
+import React from "react";
 
-export default function Score({name, score}) {
+export default function Score({ data }) {
     return (
-        <div className='score-container'>
-            <h1 className='name'>{name}</h1>
-            <h1 className='score'>{score}</h1>
+        <div className="score">
+            <h2>{`${data[0]} : ${data[1]}`}</h2>
         </div>
-    )
+    );
 }
