@@ -15,7 +15,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server, {
     cors: {
-        origin: "*",
+        origin: "http://localhost:3000",
         methods: ["GET", "POST"],
         credentials: true,
     },
@@ -216,6 +216,4 @@ io.on("connection", (socket) => {
     });
 });
 
-server.listen(process.env.PORT || PORT, () =>
-    console.log(`Listening on port ${process.env.PORT || PORT}`)
-);
+server.listen(PORT, () => console.log(`Listening on port ${PORT}`));
