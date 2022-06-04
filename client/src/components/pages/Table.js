@@ -23,8 +23,8 @@ const baseHidden = {
 };
 
 function Table() {
-    const [line, setLine] = useState([10, 1, 2, 3, 4, 5, 6]);
-    const [pool, setPool] = useState([0]);
+    const [line, setLine] = useState([10, 11, 12, 0, 14, 15, 16]);
+    const [pool, setPool] = useState([1, 2, 3, 4, 5, 6]);
     const [hidden, setHidden] = useState(baseHidden);
     const [selectedStones, setSelectedStones] = useState([]);
     const [highlightedStones, setHighlightedStones] = useState([]);
@@ -113,6 +113,11 @@ function Table() {
             setSendUpdate(false);
         }
     }, [sendUpdate]);
+
+    // If current player points >= 3
+    useEffect(() => {
+        if (currentPlayerScore >= 3) endGame();
+    }, [currentPlayerScore]);
 
     const handleClickPool = (stone) => {
         if (selectedStones.length === 1)
@@ -317,7 +322,7 @@ function Table() {
         if (self) setCurrentPlayerScore(points);
         else setOpponentPlayer(opponentPlayer[0], points);
 
-        if (points >= 3) setPhase(100);
+        if (points >= 3) endGame();
     };
 
     ////////////////////////////////////////////////////////////////////////////////////////

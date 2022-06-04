@@ -46,7 +46,7 @@ export default function Status({
 }) {
     return (
         <div className="status">
-            <h1 className="status-message">
+            <h1 className={"status-message" + (isPlayerTurn ? "" : " enemy")}>
                 {message(phase, isPlayerTurn, opponentName, deltaScore)}
             </h1>
         </div>

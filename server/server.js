@@ -41,7 +41,6 @@ const makeRoom = (resolve) => {
 // Put the newly joined player into a room's player list
 const joinRoom = (player, room) => {
     currentRoom = rooms.get(room);
-    console.log(room, currentRoom);
     updatedPlayerList = currentRoom.players.push(player);
     updatedRoom = { ...currentRoom, players: updatedPlayerList };
 };
@@ -144,13 +143,9 @@ io.on("connection", (socket) => {
 
     //Listener event for each move and emit different events depending on the state of the game
     socket.on("update", ({ room, id, state }) => {
-        console.log("update 1", room, id, state);
-
         currentBoard = rooms.get(room).board;
         otherPlayer = rooms.get(room).players.filter((p) => p.id !== id)[0];
         currentBoard.update(state);
-
-        console.log("update 2", otherPlayer);
 
         io.to(otherPlayer.id).emit("update", {
             gameState: state,
@@ -161,8 +156,6 @@ io.on("connection", (socket) => {
     socket.on("pointsUpdate", ({ room, id, self, points }) => {
         currentRoom = rooms.get(room);
         otherPlayer = currentRoom.players.filter((p) => p.id !== id)[0];
-
-        console.log("updatePoints", otherPlayer, room, id, self, points);
 
         io.to(otherPlayer.id).emit("updatePoints", {
             self: !self,

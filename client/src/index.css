@@ -95,7 +95,6 @@ input#room {
 
 h1, h2 {
   color: white;
-  filter: drop-shadow(0 3px 0.2rem black);
   text-align: center;
 }
 h1 {
@@ -104,16 +103,47 @@ h1 {
 .status-message {
   text-align: center;
   margin-bottom: 10px;
+  background: rgb(68 81 141);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 0.2rem #00000090);
+  transition: all 0.5s ease;
+}
+.status-message.enemy {
+  background: rgb(185 71 99);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 .score-board {
   display: flex;
   justify-content: space-between;
-  margin: 0px 25px 5px;
+  margin: 0px 15px 5px;
+  height: 50px;
 }
 .score {
   display: flex;
+  align-items: center;
+  gap: 10px;
 }
-
+.score.reverse {
+  flex-direction: row-reverse;
+  filter: hue-rotate(120deg) saturate(3);
+}
+.score > button {
+  width: 50px !important;
+  height: 50px !important;
+  opacity: 100% !important;
+  cursor: default !important;
+  filter: drop-shadow(0px 4px 4px #00000070);
+  transition: all 0.8s cubic-bezier(0.5, 0.4, 0.15, 2.3) !important;
+}
+.score > button.selected {
+  color: white;
+  background-image: url(/public/images/button-square-hover.png);
+}
+.score > button.current {
+  transform: scale(125%);
+}
 
 /************** Line **************/
 
@@ -226,10 +256,7 @@ h1 {
   filter: hue-rotate(290deg) saturate(2.5);
 }
 .btn:disabled:not(.selected) {
-  filter: opacity(50%);
-}
-.btn.btn-cancel:disabled {
-  filter: hue-rotate(120deg) saturate(3) opacity(50%);
+  opacity: 50%;
 }
 
 
