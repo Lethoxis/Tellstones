@@ -1,8 +1,8 @@
 import React from "react";
 
-const message = (phase, isPlayerTurn, opponentName, deltaScore) => {
-    if (deltaScore >= 3) return `You won!`;
-    if (deltaScore <= -3) return `${opponentName} won!`;
+const message = (phase, isPlayerTurn, opponentName, scores) => {
+    if (scores[0] >= 3) return `You won!`;
+    if (scores[1] >= -3) return `${opponentName} won!`;
     if (phase === 100) return `End of the game`;
 
     if (isPlayerTurn) {
@@ -38,16 +38,11 @@ const message = (phase, isPlayerTurn, opponentName, deltaScore) => {
     }
 };
 
-export default function Status({
-    phase,
-    isPlayerTurn,
-    opponentName,
-    deltaScore,
-}) {
+export default function Status({ phase, isPlayerTurn, opponentName, scores }) {
     return (
         <div className="status">
             <h1 className={"status-message" + (isPlayerTurn ? "" : " enemy")}>
-                {message(phase, isPlayerTurn, opponentName, deltaScore)}
+                {message(phase, isPlayerTurn, opponentName, scores)}
             </h1>
         </div>
     );

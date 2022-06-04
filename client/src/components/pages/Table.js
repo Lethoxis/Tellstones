@@ -338,7 +338,7 @@ function Table() {
                     phase={phase}
                     isPlayerTurn={number === turn}
                     opponentName={opponentPlayer[0]}
-                    deltaScore={currentPlayerScore - opponentPlayer[1]}
+                    scores={[currentPlayerScore, opponentPlayer[1]]}
                 />
                 <ScoreBoard
                     player={["You", currentPlayerScore]}
