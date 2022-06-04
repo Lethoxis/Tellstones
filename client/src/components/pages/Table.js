@@ -320,7 +320,7 @@ function Table() {
         console.log("handleUpdatePoints", self, points);
 
         if (self) setCurrentPlayerScore(points);
-        else setOpponentPlayer(opponentPlayer[0], points);
+        else setOpponentPlayer([opponentPlayer[0], points]);
 
         if (points >= 3) endGame();
     };

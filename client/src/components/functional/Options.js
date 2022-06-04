@@ -117,7 +117,7 @@ const Options = ({
                 >
                     <img
                         className="options-img"
-                        src={process.env.PUBLIC_URL + "/images/flag.png"}
+                        src={process.env.PUBLIC_URL + "/images/boast.png"}
                         alt="Boast"
                     />
                 </button>
