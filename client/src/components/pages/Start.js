@@ -7,7 +7,7 @@ import Loading from "../functional/Loading";
 import { Redirect } from "react-router-dom";
 
 import socketIOClient from "socket.io-client";
-const ENDPOINT = "http://http://192.168.0.15:4000";
+const ENDPOINT = "https://tellstones-server.herokuapp.com";
 
 const trimRoom = (str) =>
     str

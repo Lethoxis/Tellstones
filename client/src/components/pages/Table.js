@@ -10,7 +10,7 @@ import Options from "../functional/Options";
 import io from "socket.io-client";
 import qs from "qs";
 
-const ENDPOINT = "";
+const ENDPOINT = "https://tellstones-server.herokuapp.com";
 
 const baseHidden = {
     0: false,
@@ -334,10 +334,6 @@ function Table() {
                     opponentName={opponentPlayer[0]}
                     deltaScore={currentPlayerScore - opponentPlayer[1]}
                 />
-                {`number: ${number}, turn: ${turn}`}
-                <button onClick={() => setNumber(1 - number)}>
-                    Change player
-                </button>
                 <ScoreBoard
                     player={["You", currentPlayerScore]}
                     opponent={opponentPlayer}

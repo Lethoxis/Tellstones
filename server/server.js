@@ -15,7 +15,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: "https://tellstones-game.herokuapp.com",
         methods: ["GET", "POST"],
         credentials: true,
     },
