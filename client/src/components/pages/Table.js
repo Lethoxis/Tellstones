@@ -31,7 +31,6 @@ function Table() {
     const [number, setNumber] = useState(0);
     const [turn, setTurn] = useState(0);
     const [phase, setPhase] = useState(0);
-    const [end, setEnd] = useState(false);
 
     const [socket, setSocket] = useState(null);
     const [socketID, setSocketID] = useState(null);
@@ -46,7 +45,6 @@ function Table() {
     const gameStart = (gameState, players, id) => {
         const opponent = players.filter((p) => p[0] !== id)[0][1];
         setOpponentPlayer([opponent, 0]);
-        setEnd(false);
         setLine(gameState.line);
         setPool(gameState.pool);
         setHidden(gameState.hidden);
@@ -273,6 +271,9 @@ function Table() {
                         ]);
                     }
                 }
+                break;
+
+            default:
                 break;
         }
 
