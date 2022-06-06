@@ -2,7 +2,7 @@ import React from "react";
 
 const message = (phase, isPlayerTurn, opponentName, scores) => {
     if (scores[0] >= 3) return `You won!`;
-    if (scores[1] >= -3) return `${opponentName} won!`;
+    if (scores[1] >= 3) return `${opponentName} won!`;
     if (phase === 100) return `End of the game`;
 
     if (isPlayerTurn) {
