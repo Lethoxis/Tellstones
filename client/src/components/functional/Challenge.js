@@ -2,6 +2,7 @@ import React from "react";
 import Stone, { stoneName } from "./Stone";
 
 const Challenge = ({
+    region,
     hiddenStones,
     challengeSelected,
     setChallengeSelected,
@@ -13,6 +14,7 @@ const Challenge = ({
                     <Stone
                         key={stone}
                         name={stoneName(stone)}
+                        region={region}
                         onClick={() => setChallengeSelected(stone)}
                         clickable={true}
                         challengeSelected={challengeSelected === stone}

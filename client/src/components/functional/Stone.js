@@ -1,23 +1,24 @@
-import React from "react";
+import React, {forwardRef} from "react";
 
-const images = (stoneName) => `/images/${stoneName.toLowerCase()}.png`;
+const images = (stoneName, region) => `/images/${region}/${stoneName}.png`;
 
 export const stoneName = (stone) => {
     if (stone < 7)
         return [
-            "Sword",
-            "Shield",
-            "Horse",
-            "Crown",
-            "Hammer",
-            "Scales",
-            "Flag",
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
         ][stone];
     else return "Blank";
 };
 
-const Stone = ({
+const Stone = forwardRef(({
     name,
+    region,
     onClick,
     selected,
     challengeSelected = false,
@@ -26,11 +27,12 @@ const Stone = ({
     visible = true, // Has contour
     hidden = false, // Face down
     clickable = false,
-}) => {
+}, ref) => {
     // Blank stone
     if (name === "Blank")
         return (
             <img
+                ref={ref}
                 className={
                     "stone blank" +
                     (visible ? " visible" : "") +
@@ -38,7 +40,7 @@ const Stone = ({
                     (clickable ? " clickable" : "") +
                     (highlighted ? " highlighted" : "")
                 }
-                src={images("blank")}
+                src={images("blank", region)}
                 alt={name}
                 onClick={clickable ? onClick : null}
             />
@@ -55,6 +57,7 @@ const Stone = ({
 
     return (
         <div
+            ref={ref}
             className={
                 "flip-stone" +
                 (hidden && !peeked ? " hidden" : "") +
@@ -65,7 +68,7 @@ const Stone = ({
                 <div className="flip-stone-front">
                     <img
                         className={stoneClass}
-                        src={images(name)}
+                        src={images(name, region)}
                         alt={name}
                         onClick={clickable ? onClick : null}
                     />
@@ -73,7 +76,7 @@ const Stone = ({
                 <div className="flip-stone-back">
                     <img
                         className={stoneClass}
-                        src={images("hidden")}
+                        src={images("hidden", region)}
                         alt={name}
                         onClick={clickable ? onClick : null}
                     />
@@ -81,6 +84,6 @@ const Stone = ({
             </div>
         </div>
     );
-};
+});
 
 export default Stone;

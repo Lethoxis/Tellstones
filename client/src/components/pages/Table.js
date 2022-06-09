@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 
+import regionStyles from "../../regionStyles";
+
 import Status from "../functional/Status";
 import ScoreBoard from "../functional/ScoreBoard";
 import Line from "../functional/Line";
@@ -23,8 +25,10 @@ const baseHidden = {
 };
 
 function Table() {
-    const [line, setLine] = useState([10, 11, 12, 0, 14, 15, 16]);
-    const [pool, setPool] = useState([1, 2, 3, 4, 5, 6]);
+    const [region, setRegion] = useState("demacia");
+
+    const [line, setLine] = useState([10, 11, 12, 0, 1, 15, 16]);
+    const [pool, setPool] = useState([2, 3, 4, 5, 6]);
     const [hidden, setHidden] = useState(baseHidden);
     const [selectedStones, setSelectedStones] = useState([]);
     const [highlightedStones, setHighlightedStones] = useState([]);
@@ -55,8 +59,6 @@ function Table() {
     };
 
     const endGame = () => {
-        console.log("End");
-
         setPhase(100);
         setHidden(baseHidden);
         setSelectedStones([]);
@@ -71,7 +73,6 @@ function Table() {
             ignoreQueryPrefix: true,
         });
         setRoom(room);
-        console.log("newRoomJoin", room, name);
         socket.emit("newRoomJoin", { room, name });
 
         // New user join, logic decide on backend whether to display
@@ -113,6 +114,14 @@ function Table() {
             setSendUpdate(false);
         }
     }, [sendUpdate]);
+
+    // Changing style
+    useEffect(() => {
+        for (const [key, value] of Object.entries(regionStyles[region])) {
+            console.log(`${key}: ${value}`);
+            document.querySelector("#root").style.setProperty(key, value);
+        }
+    }, [region]);
 
     // If current player points >= 3
     useEffect(() => {
@@ -246,9 +255,8 @@ function Table() {
 
             // [99] Make a guess during boast
             case 99:
-                const stoneToGuess = highlightedStones[0];
                 // Incorrect guess
-                if (Number(challengeSelected) !== Number(stoneToGuess)) {
+                if (Number(challengeSelected) !== Number(stone1)) {
                     socket.emit("pointsUpdate", {
                         room,
                         id: socketID,
@@ -258,7 +266,7 @@ function Table() {
                     setOpponentPlayer([opponentPlayer[0], 3]);
                     endGame();
                 } else {
-                    newHidden[stoneToGuess] = false;
+                    newHidden[stone1] = false;
                     setHidden(newHidden);
                     // Boast finished!
                     if (!Object.values(newHidden).includes(true)) {
@@ -270,10 +278,6 @@ function Table() {
                         });
                         setCurrentPlayerScore(3);
                         endGame();
-                    } else {
-                        setHighlightedStones([
-                            line.filter((s) => newHidden[s])[0],
-                        ]);
                     }
                 }
                 break;
@@ -288,9 +292,9 @@ function Table() {
         } else if (phase < 16 || phase % 10 === 6) {
             setPhase(0);
             setHighlightedStones([]);
+            if (phase === 26) setTurn(1 - turn);
         } else if (phase % 10 === 7) {
             setPhase(99);
-            setHighlightedStones([line.filter((s) => hidden[s])[0]]);
             setTurn(1 - turn);
         } else if (phase === 18) {
             setPhase(26);
@@ -298,14 +302,13 @@ function Table() {
         }
 
         setSelectedStones([]);
-        if (phase === 14) {
+        if (phase === 4) {
             setTimeout(() => {
                 setSendUpdate(true);
-            }, 2000);
+            }, 5000);
         } else setSendUpdate(true);
     };
 
-    // Setting the states each move when the game haven't ended (no wins or draw)
     const handleUpdate = (gameState) => {
         console.log("server => updating", gameState);
         setLine(gameState.line);
@@ -317,8 +320,6 @@ function Table() {
     };
 
     const handleUpdatePoints = (self, points) => {
-        console.log("handleUpdatePoints", self, points);
-
         if (self) setCurrentPlayerScore(points);
         else setOpponentPlayer([opponentPlayer[0], points]);
 
@@ -330,10 +331,14 @@ function Table() {
     if (joinError) {
         return <Redirect to={`/`} />;
     } else if (waiting) {
-        return <div>Room {room}, waiting...</div>;
+        return <div className="waiting">
+          <p>Room code :</p>
+          <input type="text" value={room ?? "XXXX"} disabled/>
+          <p className="centered">Waiting for opponent...</p>
+        </div>;
     } else {
         return (
-            <div style={{ width: "100%" }}>
+            <div style={{width: "95%"}}>
                 <Status
                     phase={phase}
                     isPlayerTurn={number === turn}
@@ -344,7 +349,14 @@ function Table() {
                     player={["You", currentPlayerScore]}
                     opponent={opponentPlayer}
                 />
+                {window.location.origin.includes("localhost") &&
+                    <>
+                        <button onClick={() => setNumber(1-number)}>Change player</button>
+                        <button onClick={() => setRegion("ionia")}>Change region</button>
+                    </>
+                }
                 <Line
+                    region={region}
                     isPlayerTurn={number === turn}
                     line={line}
                     hidden={hidden}
@@ -356,6 +368,7 @@ function Table() {
                 />
                 <div className="below-line">
                     <Options
+                        region={region}
                         isPlayerTurn={number === turn}
                         line={line}
                         hidden={hidden}
@@ -368,6 +381,7 @@ function Table() {
                         handleValidate={handleValidate}
                     />
                     <Pool
+                        region={region}
                         isPlayerTurn={number === turn}
                         pool={pool}
                         phase={phase}

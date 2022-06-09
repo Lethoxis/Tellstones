@@ -1,13 +1,43 @@
-:root{
-  --square-width: 10vw;
-  --dark-blue: #011f4b; 
-  --mid-blue: #005b96;
-  --light-blue: #b3cde0;
-}
-
 @font-face {
   font-family: "Alcuin Becker Regular";
-  src: local("Alcuin Becker Regular"), url("../public/Alcuin\ Becker\ Regular.ttf") format("truetype");
+  src: local("Alcuin Becker Regular"), url("../public/Alcuin Becker Regular.ttf") format("truetype");
+}
+*:focus-visible {
+  outline: none;
+}
+
+
+/************** Body **************/
+
+#root{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-width: 300px;
+  width: 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  --color-primary: rgb(58, 73, 114);
+  --color-input-background: rgb(247, 243, 240);
+
+  --color-secondary: rgb(185, 71, 99);
+  --hue-rotate-secondary: 120deg;
+  --saturation-secondary: 3;
+
+  --color-highlight: rgb(255, 153, 0);
+  --color-select: rgb(180, 41, 76);
+  --color-line-placeable: rgb(255, 255, 255);
+
+  --image-background: url("../public/images/demacia/background.jpg");
+  --image-button: url("../public/images/demacia/button.png");
+  --image-button-hover: url("../public/images/demacia/button-hover.png");
+  --image-button-square: url("../public/images/demacia/button-square.png");
+  --image-button-square-hover: url("../public/images/demacia/button-square-hover.png");
+
+  background-image: var(--image-background);
 }
 
 * {
@@ -17,39 +47,12 @@
   padding: 0;
   font-family: Alcuin Becker Regular, Open Sans, Poppins, sans-serif;
 }
-*:focus-visible {
-  outline: none;
-}
-
-
-/************** Body **************/
-
 body{
   display: flex;
   height: 100vh;
   min-height: min-content;
   align-items: center;
   justify-content: center;
-  background-image: url("../public/images/background.jpg ");
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  overflow: none;
-}
-
-#root{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  min-width: 300px;
-  width: 95%;
-
-  --color-primary: rgb(55, 76, 104);
-
-  --color-highlight: rgb(255, 153, 0);
-  --color-select: rgb(180 41 76);
-  --color-select-twice: rgb(145, 3, 211);
 }
 
 
@@ -79,7 +82,7 @@ input {
   font-size: x-large;
   text-align: center;
   color: var(--color-primary);
-  background-color: rgb(247, 243, 240);
+  background-color: var(--color-input-background);
   border: 3px solid var(--color-primary);
   padding: 12px;
   width: 100%;
@@ -90,6 +93,19 @@ input#room {
   letter-spacing: 3px;
 }
 
+.waiting {
+    width: 300px;
+    font-size: 20px;
+    color: var(--color-primary);
+}
+.waiting input {
+    font-size: 60px;
+    font-weight: bold;
+    letter-spacing: 5px;
+}
+.waiting .centered {
+    text-align: center;
+}
 
 /************** Scores **************/
 
@@ -103,21 +119,21 @@ h1 {
 .status-message {
   text-align: center;
   margin-bottom: 10px;
-  background: rgb(68 81 141);
+  background: var(--color-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 4px 0.2rem #00000090);
   transition: all 0.5s ease;
 }
 .status-message.enemy {
-  background: rgb(185 71 99);
+  background: var(--color-secondary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .score-board {
   display: flex;
   justify-content: space-between;
-  margin: 0px 15px 5px;
+  margin: 0 15px 5px;
   height: 50px;
 }
 .score {
@@ -127,7 +143,7 @@ h1 {
 }
 .score.reverse {
   flex-direction: row-reverse;
-  filter: hue-rotate(120deg) saturate(3);
+  filter: hue-rotate(var(--hue-rotate-secondary)) saturate(var(--saturation-secondary));
 }
 .score > button {
   width: 50px !important;
@@ -139,7 +155,7 @@ h1 {
 }
 .score > button.selected {
   color: white;
-  background-image: url(/public/images/button-square-hover.png);
+  background-image: var(--image-button-square-hover);
 }
 .score > button.current {
   transform: scale(125%);
@@ -159,6 +175,7 @@ h1 {
   height: 100%;
 }
 .line-stones {
+  position: relative;
   margin: auto;
   width: 85%;
   height: 100%;
@@ -181,7 +198,7 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin: 20px 40px 0px;
+  margin: 20px 40px 0;
   gap: 20px;
 }
 
@@ -220,11 +237,8 @@ h1 {
   font-size: 25px;
   color: #374c68;
   line-height: 23px;
-  background: transparent;
   border: none;
-  background-image: url(/public/images/button.png);
-  background-position: center center;
-  background-repeat: no-repeat;
+  background: transparent var(--image-button) no-repeat center center;
   background-size: contain;
   transition: all 0.2s ease;
   z-index: 100;
@@ -232,13 +246,13 @@ h1 {
 .btn:hover:not(:disabled), .btn.selected {
   cursor: pointer;
   color: white;
-  background-image: url(/public/images/button-hover.png);
+  background-image: var(--image-button-hover);
 }
 .btn-square {
-  background-image: url(/public/images/button-square.png);
+  background-image: var(--image-button-square);
 }
 .btn-square:hover:not(:disabled), .btn-square.selected {
-  background-image: url(/public/images/button-square-hover.png);
+  background-image: var(--image-button-square-hover);
 }
 .options-img {
   height: 100%;
@@ -304,7 +318,7 @@ h1 {
   height: auto;
 }
 .stone.blank.visible {
-  border: 4px dashed white;
+  border: 4px dashed var(--color-line-placeable);
   border-radius: 50%;
 }
 .stone.blank.selected {
@@ -328,7 +342,6 @@ h1 {
 .flip-stone {
   height: 100%;
   perspective: 1000px;
-  transition: transform 0.8s;
 }
 
 .flip-stone-inner {

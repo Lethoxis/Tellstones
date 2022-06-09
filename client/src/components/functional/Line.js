@@ -1,4 +1,6 @@
 import React from "react";
+
+import FlipMove from 'react-flip-move';
 import Stone, { stoneName } from "./Stone";
 
 const isVisible = (line, pool, highlightedStones, selectedStones, i) => {
@@ -29,7 +31,10 @@ const isClickable = (
     highlightedStones,
     selectedStones
 ) => {
-    // If phase >= 15 (challenge or boast in progress) nothing is clickable
+    // If phase === 99 (boasting) only one stone is clickable at a time
+    if (phase === 99) return selectedStones.length === 0;
+
+    // If phase >= 15 (challenge or boast proposition in progress) nothing is clickable
     if (phase >= 15) return false;
 
     // If highlighted stones, only clickable what is highlighted
@@ -53,6 +58,7 @@ const isClickable = (
 };
 
 const Line = ({
+    region,
     isPlayerTurn,
     line,
     hidden,
@@ -64,42 +70,45 @@ const Line = ({
 }) => {
     return (
         <div className="line">
-            <img src="/images/line.png" alt="Line" style={{ width: "100%" }} />
+            <img src={`/images/${region}/line.png`} alt="Line" style={{ width: "100%" }} />
             <div className="div-inside-line">
                 <div className="line-stones">
-                    {line.map((stone, i) => (
-                        <Stone
-                            key={stone}
-                            name={stoneName(stone)}
-                            onClick={() => handleClickLine(stone)}
-                            selected={selectedStones.includes(stone)}
-                            highlighted={highlightedStones.includes(stone)}
-                            peeked={
-                                phase === 14 &&
-                                !isPlayerTurn &&
-                                highlightedStones.includes(stone)
-                            }
-                            hidden={hidden[stone]}
-                            visible={isVisible(
-                                line,
-                                pool,
-                                highlightedStones,
-                                selectedStones,
-                                i
-                            )}
-                            clickable={
-                                isPlayerTurn &&
-                                isClickable(
-                                    i,
+                    <FlipMove typeName={null}>
+                        {line.map((stone, i) => (
+                            <Stone
+                                key={stone}
+                                name={stoneName(stone)}
+                                region={region}
+                                onClick={() => handleClickLine(stone)}
+                                selected={selectedStones.includes(stone)}
+                                highlighted={highlightedStones.includes(stone)}
+                                peeked={
+                                    phase === 14 &&
+                                    !isPlayerTurn &&
+                                    highlightedStones.includes(stone)
+                                }
+                                hidden={hidden[stone]}
+                                visible={isVisible(
                                     line,
                                     pool,
-                                    phase,
                                     highlightedStones,
-                                    selectedStones
-                                )
-                            }
-                        />
-                    ))}
+                                    selectedStones,
+                                    i
+                                )}
+                                clickable={
+                                    isPlayerTurn &&
+                                    isClickable(
+                                        i,
+                                        line,
+                                        pool,
+                                        phase,
+                                        highlightedStones,
+                                        selectedStones
+                                    )
+                                }
+                            />
+                        ))}
+                    </FlipMove>
                 </div>
             </div>
         </div>

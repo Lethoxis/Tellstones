@@ -25,6 +25,7 @@ const phaseValidation = {
 };
 
 const Options = ({
+    region,
     isPlayerTurn,
     line,
     hidden,
@@ -53,7 +54,7 @@ const Options = ({
             highlightedStones.every((s) => selectedStones.includes(s))) ||
         (phase === 15 && challengeSelected) ||
         (phase > 15 && phase < 99) ||
-        (phase === 99 && challengeSelected);
+        (phase === 99 && selectedStones.length === 1 && challengeSelected);
 
     const validateChallenge = () => {
         setChallengeSelected(null);
@@ -86,7 +87,7 @@ const Options = ({
                 >
                     <img
                         className="options-img"
-                        src={process.env.PUBLIC_URL + "/images/challenge.png"}
+                        src={`${process.env.PUBLIC_URL}/images/${region}/challenge.png`}
                         alt="Challenge"
                     />
                 </button>
@@ -117,13 +118,14 @@ const Options = ({
                 >
                     <img
                         className="options-img"
-                        src={process.env.PUBLIC_URL + "/images/boast.png"}
+                        src={`${process.env.PUBLIC_URL}/images/${region}/boast.png`}
                         alt="Boast"
                     />
                 </button>
             </div>
             {(phase === 15 || phase === 99) && isPlayerTurn && (
                 <Challenge
+                    region={region}
                     hiddenStones={Object.entries(hidden)
                         .filter((s) => s[1])
                         .map((s) => s[0])}
