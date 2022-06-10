@@ -73,7 +73,43 @@ const Line = ({
             <img src={`/images/${region}/line.png`} alt="Line" style={{ width: "100%" }} />
             <div className="div-inside-line">
                 <div className="line-stones">
-                    <FlipMove typeName={null}>
+                    {phase === 11 &&
+                        line.map((stone, i) => (
+                            <Stone
+                                key={stone}
+                                name={stoneName(stone)}
+                                region={region}
+                                onClick={() => handleClickLine(stone)}
+                                selected={selectedStones.includes(stone)}
+                                highlighted={highlightedStones.includes(stone)}
+                                peeked={
+                                    phase === 14 &&
+                                    !isPlayerTurn &&
+                                    highlightedStones.includes(stone)
+                                }
+                                hidden={hidden[stone]}
+                                visible={isVisible(
+                                    line,
+                                    pool,
+                                    highlightedStones,
+                                    selectedStones,
+                                    i
+                                )}
+                                clickable={
+                                    isPlayerTurn &&
+                                    isClickable(
+                                        i,
+                                        line,
+                                        pool,
+                                        phase,
+                                        highlightedStones,
+                                        selectedStones
+                                    )
+                                }
+                            />
+                        ))
+                    }
+                    {phase !== 11 && <FlipMove typeName={null}>
                         {line.map((stone, i) => (
                             <Stone
                                 key={stone}
@@ -108,7 +144,7 @@ const Line = ({
                                 }
                             />
                         ))}
-                    </FlipMove>
+                    </FlipMove>}
                 </div>
             </div>
         </div>

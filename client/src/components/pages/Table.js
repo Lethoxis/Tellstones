@@ -291,7 +291,7 @@ function Table() {
             setPhase(phase + 10);
             setTurn(1 - turn);
         } else if (phase < 16 || phase % 10 === 6) {
-            setPhase(0);
+            setTimeout(() => setPhase(0), 1000);
             setHighlightedStones([]);
             if (phase === 26) setTurn(1 - turn);
         } else if (phase % 10 === 7) {
