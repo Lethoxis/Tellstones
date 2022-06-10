@@ -41,7 +41,7 @@ function Table() {
     const [room, setRoom] = useState(null);
     const [currentPlayerScore, setCurrentPlayerScore] = useState(0);
     const [opponentPlayer, setOpponentPlayer] = useState(["Enemy", 0]);
-    const [waiting, setWaiting] = useState(false);
+    const [waiting, setWaiting] = useState(window.location.origin.includes("localhost") ? false : true);
     const [joinError, setJoinError] = useState(false);
     const [sendUpdate, setSendUpdate] = useState(false);
 
@@ -292,7 +292,7 @@ function Table() {
             setPhase(phase + 10);
             setTurn(1 - turn);
         } else if (phase < 16 || phase % 10 === 6) {
-            setTimeout(() => setPhase(0), 1000);
+            setPhase(0);
             setHighlightedStones([]);
             if (phase === 26) setTurn(1 - turn);
         } else if (phase % 10 === 7) {
@@ -307,7 +307,7 @@ function Table() {
         if (phase === 4) {
             setTimeout(() => {
                 setSendUpdate(true);
-            }, 5000);
+            }, 4000);
         } else setSendUpdate(true);
     };
 
@@ -347,16 +347,17 @@ function Table() {
                     opponentName={opponentPlayer[0]}
                     scores={[currentPlayerScore, opponentPlayer[1]]}
                 />
-                <ScoreBoard
-                    player={["You", currentPlayerScore]}
-                    opponent={opponentPlayer}
-                />
                 {window.location.origin.includes("localhost") &&
                     <>
                         <button onClick={() => setNumber(1-number)}>Change player</button>
                         <button onClick={() => setRegion("piltover")}>Change region</button>
+                        <span>Phase: {phase}</span>
                     </>
                 }
+                <ScoreBoard
+                    player={["You", currentPlayerScore]}
+                    opponent={opponentPlayer}
+                />
                 <Line
                     region={region}
                     isPlayerTurn={number === turn}
