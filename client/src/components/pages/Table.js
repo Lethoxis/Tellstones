@@ -78,6 +78,7 @@ function Table() {
         // New user join, logic decide on backend whether to display
         // the actual game or the wait screen or redirect back to the main page
         socket.on("waiting", () => {
+            setRegion(localStorage.getItem("tellstonesRegion"));
             setWaiting(true);
         });
 

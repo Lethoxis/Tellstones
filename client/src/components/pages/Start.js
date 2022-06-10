@@ -7,6 +7,7 @@ import Loading from "../functional/Loading";
 import { Redirect } from "react-router-dom";
 
 import socketIOClient from "socket.io-client";
+import regionStyles from "../../regionStyles";
 const ENDPOINT = "https://tellstones-server.herokuapp.com";
 
 const trimRoom = (str) =>
@@ -45,6 +46,14 @@ function Start() {
         }
     }, [socket]);
 
+    // Changing style
+    useEffect(() => {
+        for (const [key, value] of Object.entries(regionStyles[region])) {
+            console.log(`${key}: ${value}`);
+            document.querySelector("#root").style.setProperty(key, value);
+        }
+    }, [region]);
+
     const onChoice = (choice) => {
         setNewGame(choice === "new");
         stepForward();
@@ -59,6 +68,7 @@ function Start() {
         if (validate()) {
             setLoading(true);
             if (newGame) {
+                localStorage.setItem("tellstonesRegion", region);
                 socket.emit("newGame", { region: region });
             } else {
                 socket.emit("joining", { room: room });

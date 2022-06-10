@@ -41,8 +41,8 @@ const regionStyles = {
         "--color-select": `#37A1CA`,
         "--color-line-placeable": `white`,
 
-        "--line-stones-width": "95%",
-        "--line-stones-gap": "5px",
+        "--line-stones-width": "86%",
+        "--line-stones-gap": "6px",
         "--filter-stone-highlighted": "drop-shadow(0 0 10px var(--color-highlight)) drop-shadow(0 10px 0.4rem black)",
         "--outline-stone-highlighted": "none",
         "--border-stone-blank-selected": "none",
