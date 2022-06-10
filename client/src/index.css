@@ -22,15 +22,27 @@
 
   --color-primary: rgb(58, 73, 114);
   --color-input-background: rgb(247, 243, 240);
+  --color-button-text: #374c68;
 
   --color-secondary: rgb(185, 71, 99);
-  --hue-rotate-secondary: 120deg;
-  --saturation-secondary: 3;
+  --filter-secondary: hue-rotate(120deg) saturate(3);
 
   --color-highlight: rgb(255, 153, 0);
   --color-select: rgb(180, 41, 76);
   --color-line-placeable: rgb(255, 255, 255);
 
+  --line-stones-width: 85%;
+  --line-stones-gap: 25px;
+  --filter-stone-highlighted: drop-shadow(0 10px 0.4rem black);
+  --outline-stone-highlighted: 7px dashed var(--color-highlight);
+  --border-stone-blank-selected: 2px outset var(--color-select);
+  --outline-stone-blank-visible: 4px dashed var(--color-line-placeable);
+  --filter-stone-selected: drop-shadow(0 0 4px var(--color-select)) drop-shadow(0 10px 0.4rem black);
+  --outline-stone-selected: 7px outset var(--color-select);
+  --filter-stone-selected: drop-shadow(0 0 4px var(--color-select)) drop-shadow(0 10px 0.4rem black);
+  --outline-stone-selected: 7px outset var(--color-select);
+
+  --filter-image-ohver: invert(1) brightness(2) drop-shadow(0 1px 2px black);
   --image-background: url("../public/images/demacia/background.jpg");
   --image-button: url("../public/images/demacia/button.png");
   --image-button-hover: url("../public/images/demacia/button-hover.png");
@@ -79,18 +91,34 @@ body{
   width: 20%;
 }
 input {
+  height: 70px;
+  align-self: center;
+}
+input, .region-selector {
   font-size: x-large;
   text-align: center;
   color: var(--color-primary);
   background-color: var(--color-input-background);
   border: 3px solid var(--color-primary);
   padding: 12px;
+  max-height: 90px;
   width: 100%;
   margin-bottom: 20px;
 }
 input#room {
   font-weight: bold;
   letter-spacing: 3px;
+}
+.region-selector {
+  cursor: pointer;
+  width: 90px;
+  border-radius: 50%;
+  margin-left: 10px;
+  padding: 5px;
+}
+.region-selector > img {
+  height: 100%;
+  filter: drop-shadow(0 0 1px black);
 }
 
 .waiting {
@@ -133,7 +161,7 @@ h1 {
 .score-board {
   display: flex;
   justify-content: space-between;
-  margin: 0 15px 5px;
+  margin: 0 15px 10px;
   height: 50px;
 }
 .score {
@@ -143,7 +171,7 @@ h1 {
 }
 .score.reverse {
   flex-direction: row-reverse;
-  filter: hue-rotate(var(--hue-rotate-secondary)) saturate(var(--saturation-secondary));
+  filter: var(--filter-secondary);
 }
 .score > button {
   width: 50px !important;
@@ -177,12 +205,12 @@ h1 {
 .line-stones {
   position: relative;
   margin: auto;
-  width: 85%;
+  width: var(--line-stones-width);
   height: 100%;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-auto-rows: 100%;
-  grid-gap: 25px;
+  grid-gap: var(--line-stones-gap);
   align-content: center;
   align-items: center;
 }
@@ -235,7 +263,7 @@ h1 {
   display: inline-block !important;
   height: 90px;
   font-size: 25px;
-  color: #374c68;
+  color: var(--color-button-text);
   line-height: 23px;
   border: none;
   background: transparent var(--image-button) no-repeat center center;
@@ -259,18 +287,18 @@ h1 {
   padding: 20px;
 }
 .btn:hover:not(:disabled) > img, .btn.selected > img {
-  filter: invert(1) brightness(2) drop-shadow(0 1px 2px black);
+  filter: var(--filter-image-hover);
 }
 .btn.btn-cancel {
   font-size: 35px;
   font-weight: bold;
-  filter: hue-rotate(120deg) saturate(3);
+  filter: var(--filter-secondary);
 }
 .btn-submit {
   filter: hue-rotate(290deg) saturate(2.5);
 }
 .btn:disabled:not(.selected) {
-  opacity: 50%;
+  opacity: 70%;
 }
 
 
@@ -282,7 +310,7 @@ h1 {
   gap: 10px;
   justify-content: center;
   border: 3px solid var(--color-primary);
-  background-color: rgba(247, 243, 240, 0.8);
+  background-color: var(--color-input-background);
   height: 90px;
   width: fit-content;
   padding: 5px 15px 10px;
@@ -301,29 +329,32 @@ h1 {
   transition: all 0.2s ease;
 }
 .stone.highlighted {
-  outline: 7px dashed var(--color-highlight);
-  /*filter: drop-shadow(0 10px 0.4rem black) drop-shadow(0 0 20px var(--color-select));*/
+  filter: var(--filter-stone-highlighted);
+  outline: var(--outline-stone-highlighted);
 }
 .stone.selected {
-  filter: drop-shadow(0 0 4px var(--color-select)) drop-shadow(0 10px 0.4rem black);
-  outline: 7px outset var(--color-select);
+  filter: var(--filter-stone-selected);
+  outline: var(--outline-stone-selected);
 }
 .stone.challenge-selected {
-  filter: drop-shadow(0 0 4px var(--color-select)) drop-shadow(0 10px 0.4rem black);
-  outline: 3px outset var(--color-select);
+  filter: var(--filter-stone-selected);
+  outline: var(--outline-stone-selected);
 }
 
 .stone.blank {
   width: 100%;
   height: auto;
-}
-.stone.blank.visible {
-  border: 4px dashed var(--color-line-placeable);
   border-radius: 50%;
 }
+.stone.blank.visible {
+  outline: var(--outline-stone-blank-visible);
+}
 .stone.blank.selected {
-  filter: drop-shadow(0 0 4px var(--color-select));
-  border: 2px outset var(--color-select);
+  filter: var(--filter-stone-selected);
+  border: var(--border-stone-blank-selected);
+}
+.stone.blank:not(.highlighted):not(.selected):not(.visible) {
+  opacity: 2% !important;
 }
 .stone.peeked {
   transform: rotateY(0deg) scale(2) !important;
@@ -333,7 +364,7 @@ h1 {
 }
 
 .stone:not(.clickable):not(.selected):not(.highlighted):not(.peeked) {
-  opacity: 60%;
+  opacity: 70%;
 }
 .clickable:hover {
   cursor: pointer;

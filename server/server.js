@@ -29,12 +29,12 @@ app.use(cors());
 const rooms = new Map();
 
 // Promise function to make sure room id is unique
-const makeRoom = (resolve) => {
-    var newRoom = randRoom();
+const makeRoom = (resolve, region) => {
+    let newRoom = randRoom();
     while (rooms.has(newRoom)) {
         newRoom = randRoom();
     }
-    rooms.set(newRoom, { roomId: newRoom, players: [], board: null });
+    rooms.set(newRoom, { roomId: newRoom, players: [], board: null, region: region });
     resolve(newRoom);
 };
 
@@ -60,22 +60,22 @@ function getRoomPlayersNum(room) {
 function numberAssignment(room) {
     const number0 = randNumber(1);
 
-    currentRoom = rooms.get(room);
+    let currentRoom = rooms.get(room);
     currentRoom.players[0].number = number0;
     currentRoom.players[1].number = 1 - number0;
 }
 
 //Initialize a new board to a room
 function newGame(room) {
-    currentRoom = rooms.get(room);
+    let currentRoom = rooms.get(room);
     const board = new Board();
     currentRoom.board = board;
 }
 
 io.on("connection", (socket) => {
     //On the client submit event (on start page) to create a new room
-    socket.on("newGame", () => {
-        new Promise(makeRoom).then((room) => {
+    socket.on("newGame", ({ region }) => {
+        new Promise((res) => makeRoom(res, region)).then((room) => {
             socket.emit("newGameCreated", room);
         });
     });
@@ -128,6 +128,7 @@ io.on("connection", (socket) => {
                     id: player.id,
                     gameState,
                     players,
+                    region: currentRoom.region,
                 });
             }
         }

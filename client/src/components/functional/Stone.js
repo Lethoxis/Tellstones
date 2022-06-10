@@ -32,7 +32,6 @@ const Stone = forwardRef(({
     if (name === "Blank")
         return (
             <img
-                ref={ref}
                 className={
                     "stone blank" +
                     (visible ? " visible" : "") +

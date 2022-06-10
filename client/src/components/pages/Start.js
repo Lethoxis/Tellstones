@@ -20,6 +20,7 @@ function Start() {
     const [name, setName] = useState("");
     const [newGame, setNewGame] = useState(null);
     const [room, setRoom] = useState("");
+    const [region, setRegion] = useState("demacia");
 
     const [socket, setSocket] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -58,7 +59,7 @@ function Start() {
         if (validate()) {
             setLoading(true);
             if (newGame) {
-                socket.emit("newGame");
+                socket.emit("newGame", { region: region });
             } else {
                 socket.emit("joining", { room: room });
             }
@@ -115,6 +116,8 @@ function Start() {
                             newGame={newGame}
                             name={name}
                             room={room}
+                            region={region}
+                            setRegion={setRegion}
                         />
                     </>
                 );

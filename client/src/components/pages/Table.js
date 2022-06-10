@@ -83,10 +83,11 @@ function Table() {
 
         socket.on("joinError", () => setJoinError(true));
 
-        socket.on("numberAssignment", ({ number, id, gameState, players }) => {
+        socket.on("numberAssignment", ({ number, id, gameState, players, region }) => {
             setNumber(number);
             setSocketID(id);
             setWaiting(false);
+            setRegion(region);
             gameStart(gameState, players, id);
         });
 
@@ -352,7 +353,7 @@ function Table() {
                 {window.location.origin.includes("localhost") &&
                     <>
                         <button onClick={() => setNumber(1-number)}>Change player</button>
-                        <button onClick={() => setRegion("ionia")}>Change region</button>
+                        <button onClick={() => setRegion("piltover")}>Change region</button>
                     </>
                 }
                 <Line
