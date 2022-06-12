@@ -4,16 +4,26 @@ import ChoiceButton from "./ChoiceButton";
 
 const nextRegion = (region) => {
     return {
-        "demacia": "piltover",
-        "piltover": "demacia"
+        demacia: "piltover",
+        piltover: "targon",
+        targon: "demacia",
     }[region];
-}
+};
 
-const InputForm = ({ stepBack, onSubmit, onTyping, newGame, name, room, region, setRegion }) => {
+const InputForm = ({
+    stepBack,
+    onSubmit,
+    onTyping,
+    newGame,
+    name,
+    room,
+    region,
+    setRegion,
+}) => {
     if (newGame) {
         return (
             <div className="input-container">
-                <div style={{"display": "flex"}}>
+                <div style={{ display: "flex" }}>
                     <Input
                         name="name"
                         placeholder="Your Name"
@@ -29,7 +39,10 @@ const InputForm = ({ stepBack, onSubmit, onTyping, newGame, name, room, region, 
                         onClick={() => setRegion(nextRegion(region))}
                         disabled
                     >
-                        <img src={`/images/${region}/region.png`} alt={region}/>
+                        <img
+                            src={`/images/${region}/region.png`}
+                            alt={region}
+                        />
                     </div>
                 </div>
                 <div className="choice-buttons back-submit">

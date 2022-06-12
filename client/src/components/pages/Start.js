@@ -49,7 +49,6 @@ function Start() {
     // Changing style
     useEffect(() => {
         for (const [key, value] of Object.entries(regionStyles[region])) {
-            console.log(`${key}: ${value}`);
             document.querySelector("#root").style.setProperty(key, value);
         }
     }, [region]);

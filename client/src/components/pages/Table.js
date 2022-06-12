@@ -25,7 +25,9 @@ const baseHidden = {
 };
 
 function Table() {
-    const [region, setRegion] = useState("demacia");
+    const [region, setRegion] = useState(
+        localStorage.getItem("tellstonesRegion") ?? "demacia"
+    );
 
     const [line, setLine] = useState([10, 11, 12, 0, 1, 15, 16]);
     const [pool, setPool] = useState([2, 3, 4, 5, 6]);
@@ -41,7 +43,9 @@ function Table() {
     const [room, setRoom] = useState(null);
     const [currentPlayerScore, setCurrentPlayerScore] = useState(0);
     const [opponentPlayer, setOpponentPlayer] = useState(["Enemy", 0]);
-    const [waiting, setWaiting] = useState(window.location.origin.includes("localhost") ? false : true);
+    const [waiting, setWaiting] = useState(
+        window.location.origin.includes("localhost") ? false : true
+    );
     const [joinError, setJoinError] = useState(false);
     const [sendUpdate, setSendUpdate] = useState(false);
 
@@ -78,19 +82,21 @@ function Table() {
         // New user join, logic decide on backend whether to display
         // the actual game or the wait screen or redirect back to the main page
         socket.on("waiting", () => {
-            setRegion(localStorage.getItem("tellstonesRegion"));
             setWaiting(true);
         });
 
         socket.on("joinError", () => setJoinError(true));
 
-        socket.on("numberAssignment", ({ number, id, gameState, players, region }) => {
-            setNumber(number);
-            setSocketID(id);
-            setWaiting(false);
-            setRegion(region);
-            gameStart(gameState, players, id);
-        });
+        socket.on(
+            "numberAssignment",
+            ({ number, id, gameState, players, region }) => {
+                setNumber(number);
+                setSocketID(id);
+                setWaiting(false);
+                setRegion(region);
+                gameStart(gameState, players, id);
+            }
+        );
 
         socket.on("update", ({ gameState }) => handleUpdate(gameState));
 
@@ -120,7 +126,6 @@ function Table() {
     // Changing style
     useEffect(() => {
         for (const [key, value] of Object.entries(regionStyles[region])) {
-            console.log(`${key}: ${value}`);
             document.querySelector("#root").style.setProperty(key, value);
         }
     }, [region]);
@@ -333,27 +338,33 @@ function Table() {
     if (joinError) {
         return <Redirect to={`/`} />;
     } else if (waiting) {
-        return <div className="waiting">
-          <p>Room code :</p>
-          <input type="text" value={room ?? "XXXX"} disabled/>
-          <p className="centered">Waiting for opponent...</p>
-        </div>;
+        return (
+            <div className="waiting">
+                <p>Room code :</p>
+                <input type="text" value={room ?? "XXXX"} disabled />
+                <p className="centered">Waiting for opponent...</p>
+            </div>
+        );
     } else {
         return (
-            <div style={{width: "95%"}}>
+            <div style={{ width: "95%" }}>
                 <Status
                     phase={phase}
                     isPlayerTurn={number === turn}
                     opponentName={opponentPlayer[0]}
                     scores={[currentPlayerScore, opponentPlayer[1]]}
                 />
-                {window.location.origin.includes("localhost") &&
+                {window.location.origin.includes("localhost") && (
                     <>
-                        <button onClick={() => setNumber(1-number)}>Change player</button>
-                        <button onClick={() => setRegion("piltover")}>Change region</button>
+                        <button onClick={() => setNumber(1 - number)}>
+                            Change player
+                        </button>
+                        <button onClick={() => setRegion("targon")}>
+                            Change region
+                        </button>
                         <span>Phase: {phase}</span>
                     </>
-                }
+                )}
                 <ScoreBoard
                     player={["You", currentPlayerScore]}
                     opponent={opponentPlayer}
