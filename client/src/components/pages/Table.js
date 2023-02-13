@@ -75,7 +75,6 @@ function Table() {
     const socket = io(ENDPOINT, {
       withCredentials: true,
       path: "/socket.io",
-      secure: true,
       transports: ["websocket", "polling"],
     });
     const { room, name } = qs.parse(window.location.search, {
