@@ -8,132 +8,132 @@ import { Redirect } from "react-router-dom";
 
 import socketIOClient from "socket.io-client";
 import regionStyles from "../../regionStyles";
-const ENDPOINT = "https://tellstones-server.herokuapp.com";
+const ENDPOINT = "https://tellstones-server.vercel.app";
 
 const trimRoom = (str) =>
-    str
-        .replace(/[^a-z]/gi, "")
-        .toUpperCase()
-        .slice(0, 4);
+  str
+    .replace(/[^a-z]/gi, "")
+    .toUpperCase()
+    .slice(0, 4);
 
 function Start() {
-    const [step, setStep] = useState(1);
-    const [name, setName] = useState("");
-    const [newGame, setNewGame] = useState(null);
-    const [room, setRoom] = useState("");
-    const [region, setRegion] = useState("demacia");
+  const [step, setStep] = useState(1);
+  const [name, setName] = useState("");
+  const [newGame, setNewGame] = useState(null);
+  const [room, setRoom] = useState("");
+  const [region, setRegion] = useState("demacia");
 
-    const [socket, setSocket] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [serverConfirmed, setServerConfirmed] = useState(false);
-    const [error, setError] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
+  const [socket, setSocket] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [serverConfirmed, setServerConfirmed] = useState(false);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-    useEffect(() => {
-        setSocket(socketIOClient(ENDPOINT));
-    }, []);
+  useEffect(() => {
+    setSocket(socketIOClient(ENDPOINT));
+  }, []);
 
-    useEffect(() => {
-        if (socket) {
-            socket.on("newGameCreated", (room) => {
-                setRoom(room);
-                setServerConfirmed(true);
-            });
-            socket.on("joinConfirmed", () => {
-                setServerConfirmed(true);
-            });
-            socket.on("errorMessage", (message) => displayError(message));
-        }
-    }, [socket]);
-
-    // Changing style
-    useEffect(() => {
-        for (const [key, value] of Object.entries(regionStyles[region])) {
-            document.querySelector("#root").style.setProperty(key, value);
-        }
-    }, [region]);
-
-    const onChoice = (choice) => {
-        setNewGame(choice === "new");
-        stepForward();
-    };
-
-    const validate = () => {
-        if (newGame) return name !== "";
-        else return name !== "" && room !== "";
-    };
-
-    const onSubmit = () => {
-        if (validate()) {
-            setLoading(true);
-            if (newGame) {
-                localStorage.setItem("tellstonesRegion", region);
-                socket.emit("newGame", { region: region });
-            } else {
-                socket.emit("joining", { room: room });
-            }
-        } else {
-            displayError(
-                newGame
-                    ? "Please fill out your name"
-                    : "Please fill out your name and room id"
-            );
-        }
-    };
-
-    const stepBack = () => {
-        setStep(step - 1);
-    };
-
-    const stepForward = () => {
-        setStep(step + 1);
-    };
-
-    const onTyping = (e) => {
-        const target = e.target.name;
-        const value = e.target.value;
-
-        if (target === "name")
-            setName(value.slice(0, 1).toUpperCase() + value.slice(1));
-        else setRoom(trimRoom(value));
-    };
-
-    const displayError = (message) => {
-        setError(true);
-        setErrorMessage(message);
-        setLoading(false);
-        setTimeout(() => {
-            setError(false);
-            setErrorMessage("");
-        }, 3000);
-    };
-
-    if (serverConfirmed) {
-        return <Redirect to={`/game?room=${room}&name=${name}`} />;
-    } else {
-        switch (step) {
-            case 1:
-                return <StartMenu onChoice={onChoice} />;
-            case 2:
-                return (
-                    <>
-                        <Loading loading={loading} />
-                        <InputForm
-                            stepBack={stepBack}
-                            onSubmit={onSubmit}
-                            onTyping={onTyping}
-                            newGame={newGame}
-                            name={name}
-                            room={room}
-                            region={region}
-                            setRegion={setRegion}
-                        />
-                    </>
-                );
-            default:
-                return null;
-        }
+  useEffect(() => {
+    if (socket) {
+      socket.on("newGameCreated", (room) => {
+        setRoom(room);
+        setServerConfirmed(true);
+      });
+      socket.on("joinConfirmed", () => {
+        setServerConfirmed(true);
+      });
+      socket.on("errorMessage", (message) => displayError(message));
     }
+  }, [socket]);
+
+  // Changing style
+  useEffect(() => {
+    for (const [key, value] of Object.entries(regionStyles[region])) {
+      document.querySelector("#root").style.setProperty(key, value);
+    }
+  }, [region]);
+
+  const onChoice = (choice) => {
+    setNewGame(choice === "new");
+    stepForward();
+  };
+
+  const validate = () => {
+    if (newGame) return name !== "";
+    else return name !== "" && room !== "";
+  };
+
+  const onSubmit = () => {
+    if (validate()) {
+      setLoading(true);
+      if (newGame) {
+        localStorage.setItem("tellstonesRegion", region);
+        socket.emit("newGame", { region: region });
+      } else {
+        socket.emit("joining", { room: room });
+      }
+    } else {
+      displayError(
+        newGame
+          ? "Please fill out your name"
+          : "Please fill out your name and room id"
+      );
+    }
+  };
+
+  const stepBack = () => {
+    setStep(step - 1);
+  };
+
+  const stepForward = () => {
+    setStep(step + 1);
+  };
+
+  const onTyping = (e) => {
+    const target = e.target.name;
+    const value = e.target.value;
+
+    if (target === "name")
+      setName(value.slice(0, 1).toUpperCase() + value.slice(1));
+    else setRoom(trimRoom(value));
+  };
+
+  const displayError = (message) => {
+    setError(true);
+    setErrorMessage(message);
+    setLoading(false);
+    setTimeout(() => {
+      setError(false);
+      setErrorMessage("");
+    }, 3000);
+  };
+
+  if (serverConfirmed) {
+    return <Redirect to={`/game?room=${room}&name=${name}`} />;
+  } else {
+    switch (step) {
+      case 1:
+        return <StartMenu onChoice={onChoice} />;
+      case 2:
+        return (
+          <>
+            <Loading loading={loading} />
+            <InputForm
+              stepBack={stepBack}
+              onSubmit={onSubmit}
+              onTyping={onTyping}
+              newGame={newGame}
+              name={name}
+              room={room}
+              region={region}
+              setRegion={setRegion}
+            />
+          </>
+        );
+      default:
+        return null;
+    }
+  }
 }
 
 export default Start;
