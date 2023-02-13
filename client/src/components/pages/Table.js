@@ -72,7 +72,7 @@ function Table() {
   useEffect(() => {
     // Getting the room and the username information from the url
     // Then emit to back end to process
-    const socket = io(ENDPOINT);
+    const socket = io(ENDPOINT, { transports: ["websocket"] });
     const { room, name } = qs.parse(window.location.search, {
       ignoreQueryPrefix: true,
     });
