@@ -73,6 +73,7 @@ function Table() {
     // Getting the room and the username information from the url
     // Then emit to back end to process
     const socket = io(ENDPOINT, {
+      withCredentials: true,
       path: "/socket.io",
       secure: true,
       transports: ["websocket", "polling"],
