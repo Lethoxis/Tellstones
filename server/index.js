@@ -20,7 +20,7 @@ const io = socketio(server, {
     credentials: true,
   },
   allowEIO3: true,
-  transports: ["websocket"],
+  transports: ["websocket", "polling"],
 });
 
 app.use(cors());
