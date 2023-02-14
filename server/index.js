@@ -23,7 +23,11 @@ const io = socketio(server, {
   transports: ["websocket", "polling"],
 });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://tellstones.vercel.app",
+  })
+);
 
 // Store the room ids mapping to the room property object
 // The room property object looks like this {roomid:str, players:Array(2)}
