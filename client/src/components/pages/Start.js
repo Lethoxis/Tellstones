@@ -8,7 +8,7 @@ import { Redirect } from "react-router-dom";
 
 import socketIOClient from "socket.io-client";
 import regionStyles from "../../regionStyles";
-const ENDPOINT = "https://tellstones-server.vercel.app";
+const ENDPOINT = "https://tellstones-server.onrender.com";
 
 const trimRoom = (str) =>
   str

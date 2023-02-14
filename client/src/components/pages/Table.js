@@ -12,7 +12,7 @@ import Options from "../functional/Options";
 import io from "socket.io-client";
 import qs from "qs";
 
-const ENDPOINT = "https://tellstones-server.vercel.app";
+const ENDPOINT = "https://tellstones-server.onrender.com";
 
 const baseHidden = {
   0: false,
