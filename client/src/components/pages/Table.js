@@ -74,7 +74,6 @@ function Table() {
     // Then emit to back end to process
     const socket = io(ENDPOINT, {
       withCredentials: true,
-      path: "/socket.io",
       transports: ["websocket", "polling"],
     });
     const { room, name } = qs.parse(window.location.search, {

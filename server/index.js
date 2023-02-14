@@ -15,19 +15,13 @@ const app = express();
 const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
-    origin: "*",
+    origin: "https://tellstones.vercel.app",
     methods: ["GET", "POST"],
     credentials: true,
   },
-  allowEIO3: true,
-  transports: ["websocket", "polling"],
 });
 
-app.use(
-  cors({
-    origin: "*",
-  })
-);
+app.use();
 
 // Store the room ids mapping to the room property object
 // The room property object looks like this {roomid:str, players:Array(2)}
