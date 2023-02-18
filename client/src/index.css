@@ -1,15 +1,15 @@
 @font-face {
   font-family: "Alcuin Becker Regular";
-  src: local("Alcuin Becker Regular"), url("../public/Alcuin Becker Regular.ttf") format("truetype");
+  src: local("Alcuin Becker Regular"),
+    url("../public/Alcuin Becker Regular.ttf") format("truetype");
 }
 *:focus-visible {
   outline: none;
 }
 
-
 /************** Body **************/
 
-#root{
+#root {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,9 +37,11 @@
   --outline-stone-highlighted: 7px dashed var(--color-highlight);
   --border-stone-blank-selected: 2px outset var(--color-select);
   --outline-stone-blank-visible: 4px dashed var(--color-line-placeable);
-  --filter-stone-selected: drop-shadow(0 0 4px var(--color-select)) drop-shadow(0 10px 0.4rem black);
+  --filter-stone-selected: drop-shadow(0 0 4px var(--color-select))
+    drop-shadow(0 10px 0.4rem black);
   --outline-stone-selected: 7px outset var(--color-select);
-  --filter-stone-selected: drop-shadow(0 0 4px var(--color-select)) drop-shadow(0 10px 0.4rem black);
+  --filter-stone-selected: drop-shadow(0 0 4px var(--color-select))
+    drop-shadow(0 10px 0.4rem black);
   --outline-stone-selected: 7px outset var(--color-select);
 
   --filter-image-ohver: invert(1) brightness(2) drop-shadow(0 1px 2px black);
@@ -59,14 +61,13 @@
   padding: 0;
   font-family: Alcuin Becker Regular, Open Sans, Poppins, sans-serif;
 }
-body{
+body {
   display: flex;
   height: 100vh;
   min-height: min-content;
   align-items: center;
   justify-content: center;
 }
-
 
 /************** Menus **************/
 
@@ -96,7 +97,8 @@ input {
   height: 70px;
   align-self: center;
 }
-input, .region-selector {
+input,
+.region-selector {
   font-size: x-large;
   text-align: center;
   color: var(--color-primary);
@@ -129,22 +131,23 @@ input#room {
 }
 
 .waiting {
-    width: 300px;
-    font-size: 20px;
-    color: var(--color-primary);
+  width: 300px;
+  font-size: 20px;
+  color: var(--color-primary);
 }
 .waiting input {
-    font-size: 60px;
-    font-weight: bold;
-    letter-spacing: 5px;
+  font-size: 60px;
+  font-weight: bold;
+  letter-spacing: 5px;
 }
 .waiting .centered {
-    text-align: center;
+  text-align: center;
 }
 
 /************** Scores **************/
 
-h1, h2 {
+h1,
+h2 {
   color: white;
   text-align: center;
 }
@@ -226,7 +229,6 @@ h1 {
   height: 100%;
 }
 
-
 /************** Pool **************/
 
 .below-line {
@@ -248,7 +250,6 @@ h1 {
   width: 100px;
   border-radius: 50px;
 }
-
 
 /************** Options **************/
 
@@ -278,7 +279,8 @@ h1 {
   transition: all 0.2s ease;
   z-index: 100;
 }
-.btn:hover:not(:disabled), .btn.selected {
+.btn:hover:not(:disabled),
+.btn.selected {
   cursor: pointer;
   color: white;
   background-image: var(--image-button-hover);
@@ -286,14 +288,16 @@ h1 {
 .btn-square {
   background-image: var(--image-button-square);
 }
-.btn-square:hover:not(:disabled), .btn-square.selected {
+.btn-square:hover:not(:disabled),
+.btn-square.selected {
   background-image: var(--image-button-square-hover);
 }
 .options-img {
   height: 100%;
   padding: 20px;
 }
-.btn:hover:not(:disabled) > img, .btn.selected > img {
+.btn:hover:not(:disabled) > img,
+.btn.selected > img {
   transition: all 0.1s ease;
   filter: var(--filter-image-hover);
 }
@@ -308,7 +312,6 @@ h1 {
 .btn:disabled:not(.selected) {
   opacity: 70%;
 }
-
 
 /************** Challenge **************/
 
@@ -326,7 +329,6 @@ h1 {
 .challenge-stone {
   width: 60px;
 }
-
 
 /************** Stones **************/
 
@@ -396,7 +398,8 @@ h1 {
   transform: rotateY(180deg);
 }
 
-.flip-stone-front, .flip-stone-back {
+.flip-stone-front,
+.flip-stone-back {
   display: flex;
   align-items: center;
   position: absolute;
@@ -407,4 +410,3 @@ h1 {
 .flip-stone-back {
   transform: rotateY(180deg);
 }
-
